@@ -1,213 +1,259 @@
-# Advanced MS Excel & Power BI Learning App
-# Streamlit Version: >=1.22.0
-
 import streamlit as st
-import pandas as pd
-import plotly.express as px
-import webbrowser
 
-st.set_page_config(page_title="Excel & Power BI Learning App", layout="wide")
+# --------- PAGE CONFIGURATION ----------
+st.set_page_config(
+    page_title="Data Analytics Learning Hub",
+    layout="wide",
+    initial_sidebar_state="expanded",
+    page_icon="📊"
+)
 
-# --- Custom CSS for multi-colored tabs and vibrant UI ---
-st.markdown("""
-<style>
-/* Tab buttons */
-div[data-baseweb="tab"] button {
-    background: linear-gradient(90deg, #FF6B6B, #FFD93D);
-    color: white;
-    font-weight: bold;
-    border-radius: 10px 10px 0 0;
-}
-div[data-baseweb="tab"] button:focus {
-    outline: none;
-}
-.stButton>button {
-    background-color: #1E90FF;
-    color: white;
-    border-radius: 8px;
-    padding: 0.5em 1em;
-    font-weight: bold;
-}
-.stButton>button:hover {
-    background-color: #FF6347;
-    color: white;
-}
-</style>
-""", unsafe_allow_html=True)
+# --------- CUSTOM CSS FOR DARK THEME AND ACCENTS ----------
+st.markdown(
+    """
+    <style>
+    /* General background and text colors */
+    .main{
+        background-color: #121212;
+        color: #E0E0E0;
+    }
+    /* Sidebar background */
+    [data-testid="stSidebar"] {
+        background-color: #000000;
+        color: #E0E0E0;
+    }
+    /* Sidebar headings */
+    [data-testid="stSidebar"] h2 {
+        color: #0099FF;
+    }
+    /* Tabs styled as buttons */
+    .tab-button {
+        background-color: #000000;
+        border: 2px solid #0099FF;
+        color: #0099FF;
+        padding: 10px 30px;
+        margin: 5px 10px 15px 0;
+        border-radius: 12px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 16px;
+        display: inline-block;
+        transition: all 0.3s ease;
+    }
+    .tab-button:hover {
+        background-color: #0099FF;
+        color: #121212;
+        border: 2px solid #FF3333;
+    }
+    .tab-button.selected {
+        background-color: #FF3333;
+        color: #121212;
+        border: 2px solid #FF3333;
+    }
+    /* Headers */
+    h1, h2, h3, h4, h5 {
+        color: #0099FF;
+    }
+    /* Links */
+    a {
+        color: #FF3333;
+        text-decoration: none;
+        font-weight: 600;
+    }
+    a:hover {
+        text-decoration: underline;
+    }
+    /* Buttons */
+    button {
+        background-color: #0099FF !important;
+        color: #121212 !important;
+        font-weight: 700 !important;
+        border-radius: 10px !important;
+    }
+    /* Download button */
+    button[title="download file"] {
+        background-color: #FF3333 !important;
+        color: #121212 !important;
+    }
+    /* Footer with subtle color */
+    footer {
+        color: #888888;
+        font-size: 12px;
+        margin-top: 30px;
+    }
+    /* Video embed borders */
+    iframe {
+        border-radius: 15px;
+        border: 3px solid #0099FF;
+    }
 
-# --- Tab Layout ---
-tabs = st.tabs(["🏠 Home", "📚 Quick Links & Learning", "🎥 Recommended Videos", "📝 Practice Material", "📑 Cheat Sheet", "📊 Visuals"])
+    </style>
+    """, unsafe_allow_html=True)
 
-# -------------------------------
-# HOME TAB
-# -------------------------------
-with tabs[0]:
-    st.markdown("<h1 style='color:#FF5733;'>Welcome to Excel & Power BI Learning App</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='color:#2E4053; font-size:18px;'>This app is designed to help you learn Microsoft Excel and Power BI interactively with tutorials, cheat sheets, videos, practice exercises, and visual examples.</p>", unsafe_allow_html=True)
-    
-    st.markdown("---")
-    
-    st.markdown("<h2 style='color:#1F618D;'>About Me</h2>", unsafe_allow_html=True)
-    st.markdown("""
-    **Ashwik Bire**  
-    Microsoft Certified Data & Power BI Enthusiast  
-    Working to develop interactive learning tools for Excel & Power BI.
-    """)
-    st.markdown("[LinkedIn Profile](https://www.linkedin.com/in/ashwik-bire/)")
+# --------- APP TITLE AND INTRO ----------
+st.title("📊 Data Analytics Learning Hub")
+st.markdown(
+    """
+    Welcome to this comprehensive learning app focused on **MS Power BI** and **Excel** for aspiring data professionals.
+    This platform contains rich learning materials, quick access to resources, practice exercises, and curated video tutorials.
 
-# -------------------------------
-# QUICK LINKS & LEARNING MATERIALS TAB
-# -------------------------------
-with tabs[1]:
-    st.markdown("<h1 style='color:#28B463;'>Quick Links & Learning Materials</h1>", unsafe_allow_html=True)
-    
-    st.markdown("### Excel Important Concepts")
-    excel_concepts = [
-        "Formulas & Functions", 
-        "Pivot Tables & Charts",
-        "Conditional Formatting",
-        "Data Validation",
-        "Lookup Functions (VLOOKUP, HLOOKUP, INDEX, MATCH)",
-        "Shortcuts & Tips"
-    ]
-    for concept in excel_concepts:
-        st.markdown(f"- ✅ {concept}")
+    ---  
+    Developed by [Your Name](https://linkedin.com/in/yourprofile) — Junior Data Scientist | Python & Streamlit Enthusiast  
+    """
+)
+
+# --------- TAB NAVIGATION BUTTONS ----------
+tabs = [
+    "Home",
+    "Quick Links & Materials",
+    "Power BI Concepts",
+    "Excel Concepts",
+    "Practice Materials",
+    "Recommended Videos"
+]
+
+# Initialize session state for tab selection
+if "tab_selected" not in st.session_state:
+    st.session_state.tab_selected = "Home"
+
+def set_tab(tab_name):
+    st.session_state.tab_selected = tab_name
+
+# Buttons for tabs with styling
+tab_cols = st.container()
+with tab_cols:
+    col1, col2, col3, col4, col5, col6 = st.columns(len(tabs))
+    buttons = [col1, col2, col3, col4, col5, col6]
+    for idx, tab in enumerate(tabs):
+        selected = st.session_state.tab_selected == tab
+        btn_style = "tab-button selected" if selected else "tab-button"
+        if buttons[idx].button(tab, key=tab, help=f"Go to {tab} tab"):
+            set_tab(tab)
+            st.experimental_rerun()
+
+# --------- TAB CONTENTS -----------
+
+# HOME TAB - Introduction
+if st.session_state.tab_selected == "Home":
+    st.header("Welcome!")
+    st.markdown(
+        """
+        This application is designed to be your **go-to platform** for learning and mastering Power BI and Excel.
         
-    st.markdown("### Power BI Important Concepts")
-    powerbi_concepts = [
-        "Data Modeling",
-        "DAX Formulas",
-        "Visualizations",
-        "Power Query / ETL",
-        "Reports & Dashboards",
-        "Bookmarks & Slicers"
-    ]
-    for concept in powerbi_concepts:
-        st.markdown(f"- ✅ {concept}")
-    
-    st.markdown("---")
-    st.markdown("### Downloadable Resources")
-    st.download_button("Download Excel Cheat Sheet", "Excel_Cheat_Sheet.pdf")
-    st.download_button("Download Power BI Cheat Sheet", "PowerBI_Cheat_Sheet.pdf")
-    
-# -------------------------------
+        **Features:**
+        - Easy-to-navigate color-coded tabs
+        - Curated quick learning links and practice files
+        - In-depth concepts breakdown for Power BI and Excel
+        - Embedded video tutorials for practical learning
+        - Interactive quizzes and downloadable resources
+        
+        Navigate through the tabs above to explore content.
+        """
+    )
+    st.image(
+        "https://images.unsplash.com/photo-1531497865144-9a4a41fbbc45?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80",
+        caption="Learn Data Analytics with Power BI & Excel",
+        use_column_width=True
+    )
+
+# QUICK LINKS TAB
+elif st.session_state.tab_selected == "Quick Links & Materials":
+    st.header("Quick Links & Learning Materials")
+    st.markdown(
+        """
+        Find here essential external resources carefully curated to improve your skills.
+        """
+    )
+    st.markdown(
+        """
+        - [Power BI Full Course for Beginners - YouTube](https://www.youtube.com/watch?v=FwjaHCVNBWA)
+        - [Excel to Power BI Transition - Coursera](https://www.coursera.org/learn/from-excel-to-power-bi)
+        - [Microsoft Power BI Documentation](https://docs.microsoft.com/en-us/power-bi/)
+        - [Excel Official Tutorials](https://support.microsoft.com/en-us/excel)
+        """
+    )
+    st.markdown("### Downloads")
+    st.download_button("Download Power BI Cheat Sheet (PDF)", data="Power BI Cheat Sheet Content Placeholder", file_name="powerbi_cheatsheet.pdf")
+    st.download_button("Download Excel Formulas Guide (PDF)", data="Excel Formulas Guide Content Placeholder", file_name="excel_formulas_guide.pdf")
+
+# POWER BI CONCEPTS TAB
+elif st.session_state.tab_selected == "Power BI Concepts":
+    st.header("Power BI Concepts")
+    st.markdown("""
+    Gain mastery over critical Power BI components:
+    - **Data Modeling & Relationships**
+    - **DAX - Data Analysis Expressions**
+    - **Power Query & Data Transformation**
+    - **Report & Dashboard Development**
+    - **Power BI Service & Sharing**
+    """)
+    with st.expander("Detailed Overview: Data Modeling & Relationships"):
+        st.write("Understand how tables relate, setting cardinality, and relationship types.")
+    with st.expander("Detailed Overview: DAX"):
+        st.write("Learn calculated columns, measures, variables, and time intelligence.")
+    with st.expander("Detailed Overview: Reports & Dashboards"):
+        st.write("Building interactive visuals, filters, slicers, and layouts.")
+    with st.expander("Data Sources & Power Query"):
+        st.write("Data import types, cleaning, and preparation.")
+
+# EXCEL CONCEPTS TAB
+elif st.session_state.tab_selected == "Excel Concepts":
+    st.header("Excel Important Concepts")
+    st.markdown("""
+    Key topics for Excel proficiency:
+    - **Formulas and Functions (VLOOKUP, XLOOKUP, IF, SUMIF)**
+    - **Pivot Tables and Pivot Charts**
+    - **Conditional Formatting & Data Validation**
+    - **Excel Tables & Named Ranges**
+    - **Charts & Dashboarding**
+    """)
+    with st.expander("Formulas and Functions"):
+        st.write("Deep dive into lookup functions, logical tests, and aggregation functions.")
+    with st.expander("Pivot Tables & Charts"):
+        st.write("Summarizing data, grouping, and dynamic charting.")
+    with st.expander("Dashboarding Tips"):
+        st.write("Interactive Excel dashboards using slicers and dynamic ranges.")
+
+# PRACTICE MATERIALS TAB
+elif st.session_state.tab_selected == "Practice Materials":
+    st.header("Practice Material and Exercises")
+    st.markdown("Develop your skills by practicing with these downloadable files and quizzes:")
+    st.download_button(
+        label="Download Excel Practice File",
+        data="Excel practice file data placeholder",
+        file_name="excel_practice.xlsx",
+        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+    )
+    st.download_button(
+        label="Download Power BI Dataset",
+        data="Power BI dataset file content placeholder",
+        file_name="powerbi_data.csv",
+        mime="text/csv"
+    )
+    st.markdown("#### Practice Quiz")
+    quiz_q1 = st.radio("What does DAX stand for in Power BI?", ["Data Analysis Expressions", "Dynamic Analysis X", "Digital Analytics X"], key="quiz1")
+    quiz_q2 = st.radio("Which Excel function helps to look up values in a table?", ["VLOOKUP", "SUMIF", "CONCATENATE"], key="quiz2")
+    if st.button("Submit Quiz"):
+        score = 0
+        if quiz_q1 == "Data Analysis Expressions":
+            score += 1
+        if quiz_q2 == "VLOOKUP":
+            score += 1
+        st.success(f"Your score: {score}/2")
+
 # RECOMMENDED VIDEOS TAB
-# -------------------------------
-with tabs[2]:
-    st.markdown("<h1 style='color:#F39C12;'>Recommended Videos</h1>", unsafe_allow_html=True)
-    
-    st.markdown("### Excel Tutorials")
-    excel_videos = {
-        "Excel Basics": "https://www.youtube.com/watch?v=rwbho0CgEAE",
-        "Excel Formulas Guide": "https://www.youtube.com/watch?v=9NUjHBNWe9M",
-        "Pivot Table Tutorial": "https://www.youtube.com/watch?v=9NUjHBNWe9M",
-        "Excel Charts Tutorial": "https://www.youtube.com/watch?v=JtM02yW2lVQ"
-    }
-    for title, link in excel_videos.items():
-        st.markdown(f"- [{title}]({link})")
-    
-    st.markdown("### Power BI Tutorials")
-    powerbi_videos = {
-        "Power BI Full Course": "https://www.youtube.com/watch?v=AGrl-H87pRU",
-        "Power BI DAX Tutorial": "https://www.youtube.com/watch?v=9NUjHBNWe9M",
-        "Power BI Data Modeling": "https://www.youtube.com/watch?v=AGrl-H87pRU",
-        "Power BI Visuals": "https://www.youtube.com/watch?v=AGrl-H87pRU"
-    }
-    for title, link in powerbi_videos.items():
-        st.markdown(f"- [{title}]({link})")
+elif st.session_state.tab_selected == "Recommended Videos":
+    st.header("Recommended Learning Videos")
+    st.markdown("Embedded videos for deep learning and concept clarity.")
+    st.video("https://www.youtube.com/watch?v=FwjaHCVNBWA")  # Power BI full course
+    st.video("https://www.youtube.com/watch?v=dX9Ihyns5dA")  # Excel basics tutorial
+    st.video("https://www.youtube.com/watch?v=vxCxhD7Q0Po")  # Advanced Power BI features
 
-# -------------------------------
-# PRACTICE MATERIAL TAB
-# -------------------------------
-with tabs[3]:
-    st.markdown("<h1 style='color:#AF7AC5;'>Practice Material</h1>", unsafe_allow_html=True)
-    
-    st.markdown("### Excel MCQs")
-    excel_mcq = {
-        "Which function sums a range of cells?": ["AVG()", "SUM()", "COUNT()", "MAX()", "SUM()"],
-        "Which formula calculates loan payments?": ["FV()", "PMT()", "PV()", "RATE()", "PMT()"]
-    }
-    for question, options in excel_mcq.items():
-        st.markdown(f"**{question}**")
-        choice = st.radio("Select answer:", options[:-1], key=question)
-        if choice == options[-1]:
-            st.success("✅ Correct!")
-        else:
-            st.error(f"❌ Wrong! Correct answer: {options[-1]}")
-    
-    st.markdown("### Power BI MCQs")
-    powerbi_mcq = {
-        "Which DAX function returns current year-to-date sum?": ["TOTALYTD()", "SAMEPERIODLASTYEAR()", "SUM()", "CALCULATE()", "TOTALYTD()"],
-        "Which function fetches a related table column?": ["RELATED()", "LOOKUPVALUE()", "CALCULATE()", "FILTER()", "RELATED()"]
-    }
-    for question, options in powerbi_mcq.items():
-        st.markdown(f"**{question}**")
-        choice = st.radio("Select answer:", options[:-1], key=question+"_pb")
-        if choice == options[-1]:
-            st.success("✅ Correct!")
-        else:
-            st.error(f"❌ Wrong! Correct answer: {options[-1]}")
-
-# -------------------------------
-# CHEAT SHEET TAB
-# -------------------------------
-with tabs[4]:
-    st.markdown("<h1 style='color:#E74C3C;'>Cheat Sheet</h1>", unsafe_allow_html=True)
-    
-    st.markdown("### Excel Formulas")
-    excel_data = {
-        "SUM": "SUM(A1:A10) - Adds range of cells",
-        "AVERAGE": "AVERAGE(A1:A10) - Average of range",
-        "IF": "IF(A1>10,'Yes','No') - Conditional logic",
-        "VLOOKUP": "VLOOKUP(10,A1:B10,2,FALSE) - Lookup value",
-        "INDEX": "INDEX(A1:B10,2,1) - Return value at row,col",
-        "MATCH": "MATCH(10,A1:A10,0) - Return position",
-        "TODAY": "TODAY() - Current date",
-        "NOW": "NOW() - Current date & time"
-    }
-    excel_df = pd.DataFrame(excel_data.items(), columns=["Function","Description"])
-    st.dataframe(excel_df)
-    
-    st.markdown("### Power BI DAX Queries")
-    powerbi_data = {
-        "SUM": "SUM(Sales[Amount]) - Sum of column",
-        "AVERAGE": "AVERAGE(Sales[Amount]) - Average of column",
-        "CALCULATE": "CALCULATE(SUM(Sales[Amount]), Sales[Region]='West') - Conditional sum",
-        "IF": "IF(Sales[Amount]>1000,'High','Low') - Conditional logic",
-        "RELATED": "RELATED(Customer[City]) - Fetch related table value",
-        "FILTER": "FILTER(Sales, Sales[Amount]>500) - Custom filter",
-        "RANKX": "RANKX(ALL(Sales), Sales[Amount]) - Rank values",
-        "DATESYTD": "DATESYTD(Sales[Date]) - Year-to-date sum"
-    }
-    powerbi_df = pd.DataFrame(powerbi_data.items(), columns=["DAX Query","Description"])
-    st.dataframe(powerbi_df)
-
-# -------------------------------
-# VISUALS TAB
-# -------------------------------
-with tabs[5]:
-    st.markdown("<h1 style='color:#17A589;'>Visualizations</h1>", unsafe_allow_html=True)
-    
-    st.markdown("### Sample Excel Chart (Column Chart)")
-    df_chart = pd.DataFrame({
-        "Month": ["Jan","Feb","Mar","Apr","May"],
-        "Sales": [2500,3000,2800,3500,4000]
-    })
-    fig = px.bar(df_chart, x="Month", y="Sales", title="Monthly Sales", color="Sales", color_continuous_scale="Viridis")
-    st.plotly_chart(fig)
-    
-    st.markdown("### Sample Power BI Visual (Simulated KPI)")
-    kpi_data = pd.DataFrame({
-        "KPI": ["Revenue","Profit","Customers"],
-        "Value": [50000,12000,350]
-    })
-    fig2 = px.bar(kpi_data, x="KPI", y="Value", color="KPI", text="Value", title="Sample KPI Dashboard")
-    st.plotly_chart(fig2)
-    
-    st.markdown("### Interactive Pie Chart Example")
-    pie_data = pd.DataFrame({
-        "Category":["A","B","C","D"],
-        "Values":[20,30,25,25]
-    })
-    fig3 = px.pie(pie_data, names="Category", values="Values", title="Category Distribution", color_discrete_sequence=px.colors.sequential.Rainbow)
-    st.plotly_chart(fig3)
+# --------- FOOTER ----------
+st.markdown(
+    """
+    <footer>
+    &copy; 2025 Data Analytics Learning Hub | Built with Streamlit & ❤️
+    </footer>
+    """, unsafe_allow_html=True
+)
