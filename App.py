@@ -1,46 +1,5 @@
 # -*- coding: utf-8 -*-
 
-Excel + Power BI Learning App (Colorful One-Page Tabs)
-
-Excel + Power BI Learning App (Colorful One-Page Tabs)
-
------------------------------------------------------
-
-Single-file Streamlit application with colorful, single-page tab UI.
-
-No external APIs required. Pure Python + common data/plot libs.
-
-
-
-Features
-
-- Vibrant themed UI with dynamic accent picker
-
-- Single page with colored tabs (Excel, Power BI, DAX, Power Query, Charts, Datasets, Projects, Quiz, Shortcuts, Cheat Sheets, Roadmaps, Resources)
-
-- 1500-ish lines of code packed with curated content, tips, and interactive demos
-
-- Interactive quizzes with instant scoring and explanations
-
-- Mini labs for Excel functions & DAX translated to pandas/Altair examples
-
-- Visualization gallery and style templates
-
-- Downloadable notes/cheatsheets generated on the fly
-
-- Lightweight certificate of completion generator (PNG) after passing quiz
-
-- Everything runs locally; no API keys
-
-
-
-Notes
-
-- Streamlit versions after 1.25 support tabs CSS class names used here; if yours is older,
-
-update Streamlit to see all visual styles.
-
-- You can safely comment/uncomment sections to trim features.
 
 from future import annotations import streamlit as st import pandas as pd import numpy as np import altair as alt import textwrap import io from datetime import datetime, date import base64 import random from dataclasses import dataclass
 
