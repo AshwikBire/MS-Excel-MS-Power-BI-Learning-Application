@@ -1,4 +1,4 @@
--- coding: utf-8 --
+# -*- coding: utf-8 -*-
 
 Excel + Power BI Learning App (Colorful One-Page Tabs)
 
