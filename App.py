@@ -1,6 +1,11 @@
-Excel + Power BI Learning App (Colorful One‑Page Tabs)
-
------------------------------------------------------
+# Excel + Power BI Learning App (Colorful One-Page Tabs)
+# Advanced Streamlit UI with Colorful Tabs
+import streamlit as st
+import pandas as pd
+import numpy as np
+import altair as alt
+from PIL import Image
+----------------------------------------------------
 
 Single‑file Streamlit application with colorful, single‑page tab UI.
 
