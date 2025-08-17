@@ -203,7 +203,30 @@ DAX_SNIPPETS = [ ("Total Revenue", "Total Revenue = SUM(FactSales[Revenue])"), (
 
 POWER_QUERY_STEPS = [ "Source → Choose files/folders/databases.", "Promote Headers → Use first row as headers.", "Change Types → Ensure correct data types for each column.", "Split Column → By delimiter or number of characters.", "Merge Queries → Join datasets (Left/Right/Inner/Full).", "Append Queries → Stack tables vertically.", "Group By → Aggregate like sum/count/avg.", "Pivot/Unpivot → Reshape columns and rows.", "Fill Down/Up → Handle missing values.", "Remove Errors → Clean inconsistent rows.", ]
 
-SHORTCUTS = [ ("Excel", [ ("Ctrl + Arrow", "Jump to data edges"), ("Ctrl + Shift + L", "Toggle filters"), ("Alt + =", "AutoSum"), ("Ctrl + 1", "Format Cells"), ("Ctrl + Shift + %", "Percent format"), ("Ctrl + "", "Copy value from cell above"), ("Ctrl + Enter", "Fill selected range with entry"), ]), ("Power BI Desktop", [ ("Ctrl + Shift + S", "Save As"), ("Ctrl + Shift + C", "Copy visual formatting"), ("F11", "Full screen focus"), ("Alt + Shift + Arrow", "Move visual small nudge"), ("Ctrl + .", "Selection pane"), ]), ]
+SHORTCUTS = [
+    (
+        "Excel",
+        [
+            ("Ctrl + Arrow", "Jump to data edges"),
+            ("Ctrl + Shift + L", "Toggle filters"),
+            ("Alt + =", "AutoSum"),
+            ("Ctrl + 1", "Format Cells"),
+            ("Ctrl + Shift + %", "Percent format"),
+            ("Ctrl + '", "Copy value from cell above"),
+            ("Ctrl + Enter", "Fill selected range with entry"),
+        ],
+    ),
+    (
+        "Power BI Desktop",
+        [
+            ("Ctrl + Shift + S", "Save As"),
+            ("Ctrl + Shift + C", "Copy visual formatting"),
+            ("F11", "Full screen focus"),
+            ("Alt + Shift + Arrow", "Move visual small nudge"),
+            ("Ctrl + .", "Selection pane"),
+        ],
+    ),
+]
 
 PROJECT_IDEAS = [ ("Retail Sales Dashboard", "Sales by product, region, month with cohort analysis."), ("HR Attrition Insights", "Headcount trend, attrition risk scoring, hiring funnel."), ("Financial Statement Analyzer", "Vertical/horizontal analysis, KPI cards, DuPont."), ("Marketing Funnel", "Impressions→Clicks→Leads→Wins with conversion DAX."), ("Inventory Health", "Stock turns, slow-moving SKUs, reorder points."), ("Customer 360", "RFM scoring, CLV estimation, churn signals."), ]
 
